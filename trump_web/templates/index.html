@@ -1,37 +1,43 @@
+<html>
+
+
 <!-- Latest compiled and minified CSS -->
+{% load static %}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'trump_web/css/style_trump_web.css' %}"> -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="{% static 'trump_web/js/trump_web.js' %}"></script> -->
 
 <div class="row">
-<div class="col-sm-8" class="container-fluid" style="padding-right: 50px;">
-<ul class="nav nav-pills nav-justified">
+<div class="col-xs-12 col-xs-offset-6 col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2" class="container" style="padding-right: 50px;">
+<ul class="nav nav-pills nav-justified" style="padding-top: 20px;">
   <li class="active"><a data-toggle="pill" href="#home">Tweets</a></li>
   <li><a data-toggle="pill" href="#menu1">News feed</a></li>
-  <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
 </ul>
 
 <div class="tab-content">
   <div class="tab-pane fade in active" id="home">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Tweets
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                              {% for item in tweets %}
                              {% if forloop.counter0|divisibleby:2 %}
                             <div class="alert alert-info alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><p class="fa fa-twitter-square">
                                "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link">{% endif %}{%if item.link != None %}{{item.link}}{% endif %}</a>.
                             </div>
                             {% else %}
                              <div class="alert alert-warning alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><p class="fa fa-twitter-square">
                                "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link">{% endif %}{%if item.link != None %}{{item.link}}{% endif %}</a>.
                             </div>
                             {% endif %}
@@ -44,7 +50,10 @@
                </div>
              <div class="tab-pane fade" id="menu1">
             <div id="cnn_contents">
-            <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                        <div class="panel-heading">
+                        </div>
+            <div class="container-fluid panel-group" id="accordion">
              {% for item in news %}
                     <div class="panel panel-default">
                 <div class="panel-heading">
@@ -54,21 +63,21 @@
                     </a>
                   </h4>
                 </div>   
-                <div id="{{forloop.counter}}" class="panel-collapse collapse in">
+                <div id="{{forloop.counter}}" class="panel-collapse collapse">
                   <div class="panel-body">
-                    <li> <a>{%if item.link != None %}{{item.link}}{% endif %}</a></li>
-                    <li> <a> {%if item.img_url != None %}{{item.img_url}}{% endif %} </a></li>
+                                          <div>
+                        <div style="float:left">{%if item.img_url != None %}<img src="{{item.img_url}}" width="250px"/>{% else %}<img src="http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg" width="250px"/>{% endif %}</div>
+                        <div style="float:left">Your Text Here</div>
+                      </div>
                 </div>
               </div>
-             {% endfor %}
+            </div>
+            {% endfor %}
             </div>
             </div>
             </div>
             </div>
-            <div id="menu2" class="tab-pane fade">
-    <h3>Menu 2</h3>
-    <p>Some content in menu 2.</p>
-  </div>
 </div>
 </div>
 </div>
+</html>
