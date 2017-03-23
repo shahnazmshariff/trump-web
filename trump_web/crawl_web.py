@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 import requests
 import re
 import json
+import logging
+djangologger = logging.getLogger('django')
 
 def crawl_cnn(url):
     result = requests.get(url)
@@ -13,9 +15,13 @@ def crawl_cnn(url):
 
     all_articles = []
     for url in soup.find_all("url"):
+        try:
             if "Trump" in url.title.string:
                 new_article = {"title": url.title.string,"link":url.loc.string,"img_url":url.image.string}
                 all_articles.append(new_article)
+        except Exception as e:
+            djangologger.error(str(e) + "Error in parsing cnn content")
+
     return all_articles[0:25]
 
 def crawl_twitter(url):
