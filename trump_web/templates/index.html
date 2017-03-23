@@ -7,24 +7,68 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<div class="row">
+<div class="col-sm-8" class="container-fluid" style="padding-right: 50px;">
+<ul class="nav nav-pills nav-justified">
+  <li class="active"><a data-toggle="pill" href="#home">Tweets</a></li>
+  <li><a data-toggle="pill" href="#menu1">News feed</a></li>
+  <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
+</ul>
 
-<div id="cnn_contents">
-<div class="panel-group" id="accordion">
- {% for item in news %}
-        <ul>
-         {% for key,value in item.items %}
-          {% if key == "title" %}
-         <li> <b> {{key}} : {{value}} </b></li>
-        {% endif %}
-         {% if key == "link" %}
-        <li> <a>{{key}} : {{value}} </a></li>
-        {% endif %}
-         {% if key == "img_url" %}
-        <li> <a> {{key}} : {{value}} </a></li>
-        {% endif %}
-        </ul>
-        {% endfor %}
-        <br><br>
- {% endfor %}
+<div class="tab-content">
+  <div class="tab-pane fade in active" id="home">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Tweets
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                             {% for item in tweets %}
+                             {% if forloop.counter0|divisibleby:2 %}
+                            <div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                               "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link">{% endif %}{%if item.link != None %}{{item.link}}{% endif %}</a>.
+                            </div>
+                            {% else %}
+                             <div class="alert alert-warning alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                               "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link">{% endif %}{%if item.link != None %}{{item.link}}{% endif %}</a>.
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <!-- .panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+               </div>
+             <div class="tab-pane fade" id="menu1">
+            <div id="cnn_contents">
+            <div class="panel-group" id="accordion">
+             {% for item in news %}
+                    <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
+                    {{item.title}}
+                    </a>
+                  </h4>
+                </div>   
+                <div id="{{forloop.counter}}" class="panel-collapse collapse in">
+                  <div class="panel-body">
+                    <li> <a>{%if item.link != None %}{{item.link}}{% endif %}</a></li>
+                    <li> <a> {%if item.img_url != None %}{{item.img_url}}{% endif %} </a></li>
+                </div>
+              </div>
+             {% endfor %}
+            </div>
+            </div>
+            </div>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+    <h3>Menu 2</h3>
+    <p>Some content in menu 2.</p>
+  </div>
+</div>
 </div>
 </div>
