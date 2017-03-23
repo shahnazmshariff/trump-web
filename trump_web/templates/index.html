@@ -1,0 +1,30 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<div id="cnn_contents">
+<div class="panel-group" id="accordion">
+ {% for item in news %}
+        <ul>
+         {% for key,value in item.items %}
+          {% if key == "title" %}
+         <li> <b> {{key}} : {{value}} </b></li>
+        {% endif %}
+         {% if key == "link" %}
+        <li> <a>{{key}} : {{value}} </a></li>
+        {% endif %}
+         {% if key == "img_url" %}
+        <li> <a> {{key}} : {{value}} </a></li>
+        {% endif %}
+        </ul>
+        {% endfor %}
+        <br><br>
+ {% endfor %}
+</div>
+</div>
