@@ -13,17 +13,53 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- <script src="{% static 'trump_web/js/trump_web.js' %}"></script> -->
 
+<script>
+  $(document).ready(function() {
+        $('.collapse')
+         .on('shown.bs.collapse', function() {
+             $(this)
+                 .parent()
+                 .find("#icon")
+                 .removeClass("fa-angle-down")
+                 .addClass("fa-angle-up");
+             })
+         .on('hidden.bs.collapse', function() {
+             $(this)
+                 .parent()
+                 .find("#icon")
+                 .removeClass("fa-angle-up")
+                 .addClass("fa-angle-down");
+             });
+});
+</script>
+<!-- <script src="{% static 'trump_web/js/trump_web.js' %}"></script> -->
+<div class="row"></div>
 <div class="row">
 <div class="col-xs-8 col-xs-offset-2" class="container">
 <ul class="nav nav-pills nav-justified" style="padding-top: 20px;">
-  <li class="active"><a data-toggle="pill" href="#home">Tweets</a></li>
-  <li><a data-toggle="pill" href="#newsfeed">News feed</a></li>
+  <li class="active"><a data-toggle="pill" href="#home"><h4>Home</h4></a></li>
+  <li><a data-toggle="pill" href="#tweets"><h4>Tweets</h4></a></li>
+  <li><a data-toggle="pill" href="#newsfeed"><h4>News feed</h4></a></li>
 </ul>
 
 <div class="tab-content">
-  <div class="tab-pane fade in active" id="home">
+<div class="tab-pane fade in active" id="home">
+<div class="panel panel-default">
+                        <div class="panel-heading">
+                        </div>
+                         <div class="panel-body">
+<div style="display: table">
+  <span><img src="http://c7.nrostatic.com/sites/default/files/uploaded/donald-trump-bankruptcy-lies-r.jpg" width="400px" style="vertical-align: middle;display: table-cell;"/></span>
+  <span style="vertical-align: middle;display: table-cell;"> 
+ <h3> Be the first to know.</h3> <br> 
+ <h4>         A one-stop shop to get the most up-to-date information about Donald Trump, his tweets and news articles.<br> Hover over to the next two tabs to know more. </h4>
+  </span>
+</div>
+</div>
+</div>
+</div>
+  <div class="tab-pane fade" id="tweets">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                         </div>
@@ -32,13 +68,15 @@
                              {% for item in tweets %}
                              {% if forloop.counter0|divisibleby:2 %}
                             <div class="alert alert-info alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><p class="fa fa-twitter-square">
-                               "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link" target="_blank">View Tweet</a>{% endif %}
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><p class="fa fa-twitter-square" style="font-size: 1.25em;"></p> {% if item.retweeted_status %} 
+                                <p class="fa fa-retweet" style="font-size: 1.25em;"></p>{% endif %} {{ item.time }}<br> 
+                               <p class="fa fa-quote-left" style="font-size: 0.75em;"></p> {{ item.text }} <p class="fa fa-quote-right" style="font-size: 0.75em;"> </p> {%if item.link != None %} <a href="{{item.link}}" class="alert-link" target="_blank"> View Tweet </a>{% endif %}
                             </div>
                             {% else %}
                              <div class="alert alert-warning alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><p class="fa fa-twitter-square">
-                               "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link" target="_blank">View Tweet</a>{% endif %}
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><p class="fa fa-twitter-square" style="font-size: 1.25em;"></p> {% if item.retweeted_status %} 
+                                <p class="fa fa-retweet" style="font-size: 1.25em;"></p>{% endif %} {{ item.time }}<br> 
+                               <p class="fa fa-quote-left" style="font-size: 0.75em;"></p> {{ item.text }} <p class="fa fa-quote-right" style="font-size: 0.75em;"> </p> {%if item.link != None %} <a href="{{item.link}}" class="alert-link" target="_blank"> View Tweet </a>{% endif %}
                             </div>
                             {% endif %}
                             {% endfor %}
@@ -58,8 +96,8 @@
                     <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
-                    {{item.title}}
+                    <a id="newstitle" data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
+                    <p id="icon" class="fa fa-angle-down"> {{item.title}}
                     </a>
                   </h4>
                 </div>   
@@ -67,7 +105,7 @@
                   <div class="panel-body">
                                           <div>
                         <div style="float:left">{%if item.img_url != None %}<img src="{{item.img_url}}" width="250px"/>{% else %}<img src="http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg" width="250px"/>{% endif %}</div>
-                        <div style="float:bottom; padding-right: 10px">{{item.desc}}..<a href="{{item.link}}" target="_blank">Read more<a></div>
+                        <div style="float:bottom; padding-right: 10px"><p><u>{{item.date}}</u></p> <br><p> {{item.desc}}..</p><a href="{{item.link}}" target="_blank">Read more<a></div>
                       </div>
                 </div>
               </div>

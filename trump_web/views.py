@@ -6,6 +6,6 @@ from trump_web.crawl_web import crawl_cnn,crawl_twitter
 
 def web_contents_view(request):
     cnn_contents = crawl_cnn('http://edition.cnn.com/sitemaps/sitemap-news.xml')
-    twitter_contents = crawl_twitter('https://api.twitter.com/1.1/search/tweets.json?q=from%3ArealDonaldTrump&count=75')
+    twitter_contents = crawl_twitter('https://api.twitter.com/1.1/search/tweets.json?q=from%3ArealDonaldTrump&count=30')
     return render(request,'index.html',{'news':cnn_contents,'tweets':twitter_contents})
     # return HttpResponse(cnn_contents,content_type = "application/json")
