@@ -11,6 +11,12 @@ from datetime import datetime,timezone
 import dateparser
 djangologger = logging.getLogger('django')
 
+def unescape(s):
+   s = s.replace("&lt;", "<")
+   s = s.replace("&gt;", ">")
+   s = s.replace("&amp;", "&")
+   return s
+
 def get_desc_of_article(contents):
     soup = BeautifulSoup(contents,'html')
     for tag in soup.find_all("meta"):
@@ -18,6 +24,7 @@ def get_desc_of_article(contents):
         for key,val in attributes_meta_tag.items():
             if attributes_meta_tag[key] == "description":
                 desc = attributes_meta_tag["content"]
+                desc = unescape(desc)
                 return desc
 
 def get_time_since_tweet(total_sec):
@@ -37,6 +44,10 @@ def get_time_since_tweet(total_sec):
             sincewhen = str(total_min) + " mins ago"
     else:
         sincewhen = str(total_sec) + " secs ago"
+    if total_min == 1:
+        sincewhen = str(total_min) + " min ago"
+    if total_hr == 1:
+        sincewhen = str(total_hr) + " hour ago"
     return sincewhen
 
 def crawl_cnn(url):
@@ -85,7 +96,8 @@ def crawl_twitter(url):
         sincewhen = get_time_since_tweet(total_sec)
         fav_count = json_result["statuses"][i]["favorite_count"]
         retweet_count = json_result["statuses"][i]["retweet_count"]
-        new_tweet = {"text": json_result["statuses"][i]["text"],"link":link,"time":sincewhen,"fav":fav_count,
+        tweet = unescape(json_result["statuses"][i]["text"])
+        new_tweet = {"text": tweet ,"link":link,"time":sincewhen,"fav":fav_count,
         "retweet":retweet_count,"retweeted_status":retweeted_status}
         all_tweets.append(new_tweet)
     if len(all_tweets) > 25:
