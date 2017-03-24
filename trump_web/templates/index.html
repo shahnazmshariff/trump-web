@@ -100,12 +100,11 @@
                 <div class="panel-heading">
                   <h4 class="panel-title">
                     <a id="newstitle" data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
-                    <p id="icon" class="fa fa-angle-down"> {{item.title}}
-                    </a>
-                    <div style="box-sizing: border-box;float: right;">
-                    <span class="glyphicon glyphicon-time" style="font-size: 0.75em;"></span>  
-                    <span style="font-size: 0.75em;">{{ item.time }}</span>
-                    </div>
+                    <p id="icon" class="fa fa-angle-down"> {{item.title}} 
+                    </a><br>
+                    <div style="box-sizing: border-box;float: right;height: auto;">
+                    <p class="glyphicon glyphicon-time" style="font-size: 0.75em;">  {{ item.time }}</p>
+                    </div><br><br>
                   </h4>
                 </div>   
                 <div id="{{forloop.counter}}" class="panel-collapse collapse">
