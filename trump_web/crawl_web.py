@@ -1,23 +1,29 @@
-# -*- coding: utf-8 -*-
-
-# import mechanize
-from bs4 import BeautifulSoup
-import requests
-import re
-import json
-import logging
 import datetime
+import logging
+import re
 from datetime import datetime,timezone
+
 import dateparser
+import requests
+from bs4 import BeautifulSoup
+
 djangologger = logging.getLogger('django')
 
 def unescape(s):
-   s = s.replace("&lt;", "<")
-   s = s.replace("&gt;", ">")
-   s = s.replace("&amp;", "&")
-   return s
+    '''
+        Args: String containing escape characters
+        Returns: String without escape characters
+    '''
+    s = s.replace("&lt;", "<")
+    s = s.replace("&gt;", ">")
+    s = s.replace("&amp;", "&")
+    return s
 
 def get_desc_of_article(contents):
+    '''
+    Args: html content of the requested article
+    Returns: description of the article(string)
+    '''
     soup = BeautifulSoup(contents,'html')
     for tag in soup.find_all("meta"):
         attributes_meta_tag = tag.attrs
@@ -28,34 +34,46 @@ def get_desc_of_article(contents):
                 return desc
 
 def get_time_since_tweet(total_sec):
-    if total_sec>60:
+    '''
+    Args: Total seconds (Time difference between the time when tweet was posted and time right now).
+    Returns: A string eg: 3 hours ago, 2 days ago
+
+    '''
+
+    if total_sec>=60:
         total_min = int(total_sec/60)
-        if total_min>60:
+        if total_min>=60:
             total_hr = int(total_min/60)
-            if total_hr>24:
+            if total_hr>=24:
                 total_days = int(total_hr/24)
                 if total_days == 1:
                      sincewhen = str(total_days) + " day ago"
                 else:
                     sincewhen = str(total_days) + " days ago"
             else:
-                sincewhen = str(total_hr) + " hours ago"
+                if total_hr == 1:
+                    sincewhen = str(total_hr) + " hour ago"
+                else:
+                    sincewhen = str(total_hr) + " hours ago"
         else:
-            sincewhen = str(total_min) + " mins ago"
+            if total_min == 1:
+                sincewhen = str(total_min) + " min ago"
+            else:
+                sincewhen = str(total_min) + " mins ago"
     else:
         sincewhen = str(total_sec) + " secs ago"
-    if total_min == 1:
-        sincewhen = str(total_min) + " min ago"
-    if total_hr == 1:
-        sincewhen = str(total_hr) + " hour ago"
     return sincewhen
 
 def crawl_cnn(url):
+    '''
+    Args: url of the site to be crawled
+    Returns: A list of 25 articles. Each item is a dict containing title, link, img_url, desc & published date
+
+    '''
     result = requests.get(url)
     soup = BeautifulSoup(result.content, 'xml')
 
     all_articles = []
-    # new_article = {}
     for url in soup.find_all("url"):
         if len(all_articles)<25:
             try:
@@ -64,8 +82,12 @@ def crawl_cnn(url):
                     contents = get_article.content
                     desc = get_desc_of_article(contents)
                     parsed_date = dateparser.parse(url.publication_date.string)
-                    final_date = parsed_date.strftime('%b %d %Y %I:%M %p')
-                    new_article = {"title": url.title.string,"link":url.loc.string,"img_url":url.image.string,"desc":desc,"date":final_date}
+                    date_now = datetime.now(timezone.utc)
+                    time_delta = date_now - parsed_date
+                    total_sec = time_delta.total_seconds()
+                    sincewhen = get_time_since_tweet(total_sec)
+                    # final_date = parsed_date.strftime('%b %d %Y %I:%M %p')
+                    new_article = {"title": url.title.string,"link":url.loc.string,"img_url":url.image.string,"desc":desc,"time":sincewhen}
                     all_articles.append(new_article)
             except Exception as e:
                 djangologger.error(str(e) + "Error in parsing cnn content")
@@ -74,6 +96,11 @@ def crawl_cnn(url):
     return(all_articles)
 
 def crawl_twitter(url):
+    '''
+    Args: url of twitter API
+    Returns: a list of 25 tweets
+
+    '''
     access_token = "AAAAAAAAAAAAAAAAAAAAAJsVzwAAAAAAxBRtCkAUnQPWnjXqhSwDtxDH5I8%3DXIqX8EZwvJoLO5sbjwsecrLeblk65NNGrG9H3WAMReF5WyXk4f"
     get_headers = {"Authorization": 'Bearer '+access_token}
     result = requests.get(url,headers=get_headers)
