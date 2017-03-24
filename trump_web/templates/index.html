@@ -16,10 +16,10 @@
 <!-- <script src="{% static 'trump_web/js/trump_web.js' %}"></script> -->
 
 <div class="row">
-<div class="col-xs-12 col-xs-offset-6 col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2" class="container" style="padding-right: 50px;">
+<div class="col-xs-8 col-xs-offset-2" class="container">
 <ul class="nav nav-pills nav-justified" style="padding-top: 20px;">
   <li class="active"><a data-toggle="pill" href="#home">Tweets</a></li>
-  <li><a data-toggle="pill" href="#menu1">News feed</a></li>
+  <li><a data-toggle="pill" href="#newsfeed">News feed</a></li>
 </ul>
 
 <div class="tab-content">
@@ -33,12 +33,12 @@
                              {% if forloop.counter0|divisibleby:2 %}
                             <div class="alert alert-info alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><p class="fa fa-twitter-square">
-                               "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link">{% endif %}{%if item.link != None %}{{item.link}}{% endif %}</a>.
+                               "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link" target="_blank">View Tweet</a>{% endif %}
                             </div>
                             {% else %}
                              <div class="alert alert-warning alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><p class="fa fa-twitter-square">
-                               "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link">{% endif %}{%if item.link != None %}{{item.link}}{% endif %}</a>.
+                               "{{ item.text }}" {%if item.link != None %}<a href="{{item.link}}" class="alert-link" target="_blank">View Tweet</a>{% endif %}
                             </div>
                             {% endif %}
                             {% endfor %}
@@ -48,7 +48,7 @@
                     <!-- /.panel -->
 
                </div>
-             <div class="tab-pane fade" id="menu1">
+             <div class="tab-pane fade" id="newsfeed">
             <div id="cnn_contents">
             <div class="panel panel-default">
                         <div class="panel-heading">
@@ -67,7 +67,7 @@
                   <div class="panel-body">
                                           <div>
                         <div style="float:left">{%if item.img_url != None %}<img src="{{item.img_url}}" width="250px"/>{% else %}<img src="http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg" width="250px"/>{% endif %}</div>
-                        <div style="float:left">Your Text Here</div>
+                        <div style="float:bottom; padding-right: 10px">{{item.desc}}..<a href="{{item.link}}" target="_blank">Read more<a></div>
                       </div>
                 </div>
               </div>
