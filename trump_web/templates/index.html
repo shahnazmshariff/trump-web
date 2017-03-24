@@ -106,7 +106,7 @@
                 <div id="{{forloop.counter}}" class="panel-collapse collapse">
                   <div class="panel-body">
                                           <div>
-                        <div style="float:left">{%if item.img_url != None %}<img src="{{item.img_url}}" width="250px"/>{% else %}<img src="http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg" width="250px"/>{% endif %}</div>
+                        <div style="float:left">{%if item.img_url != None %}<img src="{{item.img_url}}" style="width: 100%; height: auto;"/>{% else %}<img src="http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg" style="width: 100%; height: auto;"/>{% endif %}</div>
                         <div style="float:bottom; padding-right: 10px"><p><u>{{item.date}}</u></p> <br><p> {{item.desc}}..</p><a href="{{item.link}}" target="_blank">Read more<a></div>
                       </div>
                 </div>
